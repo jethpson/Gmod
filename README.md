@@ -11,5 +11,7 @@ Expression 2 supports a variety of mathematical operations, making it well-suite
 The language includes control flow structures such as loops and conditional statements, allowing for the creation of more complex and dynamic scripts. This facilitates decision-making processes and iterative actions in response to in-game events.
 
 Expression 2 scripts can interface with and control a wide range of Wiremod devices. This integration enables players to build intricate contraptions, ranging from automated doors and elevators to elaborate logic puzzles and games.
-#Expression 2 benefits from a vibrant and creative community. Users share their scripts and creations, contributing to a diverse library of resources available through the Steam Workshop.
-#this repository contains some of my adventures into this unique environment. 
+
+Expression 2 benefits from a vibrant and creative community. Users share their scripts and creations, contributing to a diverse library of resources available through the Steam Workshop.
+
+This repository contains some of my adventures into this unique environment. 
