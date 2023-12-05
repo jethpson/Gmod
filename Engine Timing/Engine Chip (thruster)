@@ -1,0 +1,47 @@
+#/ Desciption:
+#	This code provides the timing needed to activate thrusters, simulating the motions of an engine
+#	opening and closing piston valves.
+#/
+
+@name Engine Chip (thruster)
+
+@inputs W S A D On E GasOn [Crankshaft Crankshaft1 BasePlate]:wirelink Shift  Engine:entity
+
+@outputs RPM RPM1 Bearing SoundPitch Throttle E Gas1
+@outputs Piston1 Piston2 Piston3 Piston4 Piston5 Piston6 
+
+@persist Throttle G Gas Bearing1 RPM1 Crank1:entity
+
+
+interval(10)	#Sets the proccess' speed.
+
+Throttle=15
+
+		#Inputs
+if (W){Throttle = select(100,200,300,500,800)}
+if (A){Throttle = select(100,200,300,500,800)}
+if (D){Throttle = select(100,200,300,500,800)}
+if (S){Throttle = -select(100,200,300,500,600)}
+
+				#Sound toggle/pitch control
+T = Throttle*On
+SoundPitch=RPM*0.0010
+
+				#Calculates a full rotation/it's rpm, and direction relative to an object.
+Crank = Crankshaft:entity()
+Base = BasePlate:entity()
+RPM = abs(Crank:angVel():yaw()/3)
+RPM1 = abs(Crank:angVel():yaw()/3)/25
+Bearing=Crank:bearing(Base:pos()+vec(0,0,12):rotate(Base:angles()))
+
+				#Each pistion will have either a postive or negative thrust applied depending on how many pistons and
+Piston1 = sin(Bearing)*T	#it's connection to the crank shaft.
+Piston2 = sin(Bearing + 60)*T
+Piston3 = sin(Bearing + 120)*T
+Piston4 = sin(Bearing + 180)*T
+Piston5 = sin(Bearing + 240)*T
+Piston6 = sin(Bearing + 300)*T
+
+
+
+
