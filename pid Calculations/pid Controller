@@ -1,0 +1,38 @@
+#/ Desciption:
+#	This code provides simple correction calculations to keep an object onto a target value.
+#/
+
+@name PID Controller
+@inputs CurrentVal TargetVal
+@outputs Output [Proportion Integral Derivative]:number
+@persist Error ErrorTotal Proportion Integral Derivative
+
+Kp = 0.0000001
+Ki = 0
+Kd = 200
+
+IntegralOnZone = 500
+
+runOnTick(50)
+
+Error = TargetVal - CurrentVal
+
+if(abs(Error)<IntegralOnZone && Error !=0){
+    ErrorTotal += Error
+}
+else{
+    ErrorTotal = ErrorTotal    
+}
+
+if(Error == 0){
+    Derivative = 0   
+}
+
+Proportion =    Error          * Kp
+Integral   =    ErrorTotal     * Ki
+Derivative =    $Error         * Kd
+
+Output = -(Proportion + Integral + Derivative)
+
+Output = clamp(Output,0,999)
+
