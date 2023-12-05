@@ -1,0 +1,80 @@
+#/ Desciption:
+#	This code provides the timing needed to Apply a artifical force, completely simulating the motions of an engine
+#	opening and closing piston valves.
+#/
+
+@name engine chip (apply force)
+
+@inputs Engine:entity Whell:entity BasePlate:entity W S Break Boost Horn
+
+@outputs SoundPitch
+
+@persist Q T Prop:entity
+
+
+runOnTick(1) #Sets the proccess' speed based on game.
+
+P=owner()
+E=entity()
+Ep=entity():isConstrainedTo()
+
+if (first())
+{
+    setMass(10)
+    soundPlay(0,0,"acf_extra/vehiclefx/starters/starter1.wav")
+}
+
+if(Break >= 0){
+ Engine:propFreeze(0)
+Timer = 0.10
+}
+
+if(Break)
+{
+Engine:propFreeze(10)
+}
+    
+if(Boost)
+{
+Engine:applyTorque( vec(0,0,-95000) + -1900 *Engine:mass() * Whell:inertia())
+    soundPlay(10,0,"acf_extra/vehiclefx/boost/turbo_hiss2.wav")
+}
+    
+
+if(W)
+{
+Engine:applyTorque( vec(0,150000,0) + -1900 *Engine:mass() * Whell:inertia())
+}
+
+if(S)
+{
+Engine:applyTorque( vec(0,-150000,0) + 1100 *Engine:mass() * Whell:inertia())
+
+}
+
+
+RPM = abs(entity():isConstrainedTo():angVel():yaw()/170)
+Q+=sign(RPM-Q)*1
+if(first()){P:soundPlay(100,0,"vehicles/apc/apc_firstgear_loop1.wav")}
+soundPitch(100,40+Q/4)
+C=(RPM-Q) *1
+
+
+
+
+
+
+if(Q>320) {
+   P:soundPlay(20,10,"acf_extra/vehiclefx/boost/turbo_hiss5.wav") 
+
+}
+
+if(Horn)
+{
+    Ep:soundPlay(40,0,"acf_extra/vehiclefx/horn/truckhorn.wav")    
+}
+
+
+if(dupefinished())
+{ reset() 
+}
