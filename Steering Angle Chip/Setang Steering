@@ -1,0 +1,52 @@
+#/ Desciption:
+#	This code provides an object that's angles are tied to a vehicle and when inputed with steering controls 
+#	adds rotation to simulate a tire turning. This is the best solution to add steering using the games tools.
+#/
+
+@name Setang steering
+
+@outputs Trim 
+
+@inputs A D S W CHASSIS:entity Speed
+
+@persist obj:entity [TURN_RATE TURN_ANGLE TURN TURN2] B C
+
+@model models/sprops/rectangles/size_2/rect_12x12x3.mdl
+
+
+if (dupefinished()) {reset()}
+
+B = round(toUnit("km/h",CHASSIS:vel():length()))
+
+SpedMin=Speed*0.3
+
+if(B >= 20)  {
+    
+    TURN_ANGLE = 25
+}
+else
+{
+   TURN_ANGLE = 45
+}
+
+if (A<1 & D<1) {TURN_RATE = 1+SpedMin} else{TURN_RATE = 1+SpedMin}
+
+
+if (first())    {
+    interval(30)
+
+    
+    obj = entity()
+} elseif (clk())    {
+    interval(20)
+
+    if (!obj:isPlayerHolding())    {
+        TURN += clamp((A-D)*TURN_ANGLE - TURN, -TURN_RATE, TURN_RATE)
+        
+        TURN2 += clamp((S-W)*TURN_ANGLE - TURN2, -TURN_RATE, TURN_RATE)
+      
+      obj:setAng( CHASSIS:toWorld(ang( 0, TURN,0 )))
+        obj:propFreeze(1)
+        
+    }
+}
