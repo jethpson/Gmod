@@ -1,0 +1,44 @@
+#/ Desciption:
+#	This code controls four objects thats angles are tied to a vehicle and when inputed with steering controls  
+#	adds rotation to simulate a rudder, ailerons, etc turning. This is the best solution to add steering using the games tools.
+#/
+
+
+@name Plane Controller
+
+@inputs W A S D Mouse1 Mouse2 Space Back:entity Left:entity Right:entity Base:entity Alt
+
+@outputs Throttle Gear Code:string
+
+@persist Gearing Balance Roll Pitch
+
+interval(1)     #Sets the proccess' speed.
+
+		#Locks the four objects into a position.
+if(first()||dupefinished()){E=entity() Back:setPos(E:toWorld(vec(0,-10,10))) Left:setPos(E:toWorld(vec(-10,0,10))) Right:setPos(E:toWorld(vec(10,0,10))) }
+
+if(Alt){if(~Alt){
+Balance=clamp((Balance+Alt-(Balance*2)),0,1)}}
+
+if(Balance){
+Pitch=clamp(Base:angles():pitch()*((0-W-S)+1),-3,3)
+Roll=clamp(((Base:angles():roll())+$Roll*5)*((0-A-D)+1),-3,3)
+} else{Roll=0}
+Back:setAng(Base:toWorld(ang(((W-S)*25)+13+Pitch,0,0)))
+Left:setAng(Base:toWorld(ang(((D-A)*13)-Roll,0,0)))
+Right:setAng(Base:toWorld(ang(((A-D)*13)+Roll,0,0)))
+if(!Back:isPlayerHolding()){
+Back:propFreeze(1)}
+if(!Left:isPlayerHolding()){
+Left:propFreeze(1)}
+if(!Right:isPlayerHolding()){
+Right:propFreeze(1)}
+
+
+Gearing=Mouse1+Mouse2
+
+if(changed(Gearing)){
+    Gear=clamp(Gear+Mouse1-Mouse2,1,4)
+}
+Throttle=Space*100
+
