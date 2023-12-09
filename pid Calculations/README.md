@@ -1,1 +1,1 @@
-
+A PID, or Proportional-Integral-Derivative controller, is a feedback control system used in various engineering applications to regulate and control processes. It is a widely employed algorithm that adjusts the output of a system to maintain a desired setpoint by continuously measuring the difference between the desired setpoint and the actual output of the system.
