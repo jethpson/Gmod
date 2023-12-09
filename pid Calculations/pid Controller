@@ -4,12 +4,13 @@
 
 @name PID Controller
 @inputs CurrentVal TargetVal
-@outputs Output [Proportion Integral Derivative]:number
-@persist Error ErrorTotal Proportion Integral Derivative
+@outputs Output PrevError [Proportion Integral Derivative]:number
+@persist Error ErrorTotal Proportion Integral Derivative 
 
-Kp = 0.0000001
+Kp = 0.00000001  
 Ki = 0
 Kd = 200
+
 
 IntegralOnZone = 500
 
@@ -21,7 +22,7 @@ if(abs(Error)<IntegralOnZone && Error !=0){
     ErrorTotal += Error
 }
 else{
-    ErrorTotal = ErrorTotal    
+    ErrorTotal = 0    
 }
 
 if(Error == 0){
@@ -30,9 +31,12 @@ if(Error == 0){
 
 Proportion =    Error          * Kp
 Integral   =    ErrorTotal     * Ki
-Derivative =    $Error         * Kd
+Derivative = (Error - PrevError) * Kd
 
 Output = -(Proportion + Integral + Derivative)
 
 Output = clamp(Output,0,999)
+
+PrevError = Error
+
 
