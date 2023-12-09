@@ -1,2 +1,3 @@
+Video showing how the MassCenter program works:
 
-XXuaaAzqCtI 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/XXuaaAzqCtI/0.jpg)](https://www.youtube.com/watch?v=XXuaaAzqCtI)
